@@ -1,0 +1,46 @@
+from mpython import *
+import random
+import time
+wedapp_score = 0
+wedapp_x = 63
+wedapp_y = 3
+wedapp_c = 1
+wedapp_zx0 = random.randint(0, 87)
+wedapp_zx1 = random.randint(0, 87)
+wedapp_zy0 = 27
+wedapp_zy1 = 63
+while not button_a.is_pressed():
+    oled.fill(0)
+    oled.DispChar(str((str(wedapp_score))), 0, 0, 1)
+    oled.circle(wedapp_x, wedapp_y, 3, 1)
+    oled.fill_rect(wedapp_zx0, wedapp_zy0, 40, 5, 1)
+    oled.fill_rect(wedapp_zx1, wedapp_zy1, 40, 5, 1)
+    oled.show()
+    wedapp_zy0 = wedapp_zy0 + -1
+    wedapp_zy1 = wedapp_zy1 + -1
+    wedapp_y = wedapp_y + wedapp_c
+    if wedapp_zy0 <= -4:
+        wedapp_score = wedapp_score + 1
+        wedapp_zy0 = 64
+        wedapp_zx0 = random.randint(0, 87)
+    if wedapp_zy1 <= -4:
+        wedapp_score = wedapp_score + 1
+        wedapp_zy1 = 64
+        wedapp_zx1 = random.randint(0, 87)
+    if touchpad_p.is_pressed() and touchpad_y.is_pressed():
+        wedapp_x = wedapp_x + -3
+        if wedapp_x <= 2:
+            wedapp_x = 2
+    if touchpad_o.is_pressed() and touchpad_n.is_pressed():
+        wedapp_x = wedapp_x + 3
+        if wedapp_x >= 125:
+            wedapp_x = 125
+    if wedapp_y <= 1 or wedapp_y >= 65:
+        oled.fill(0)
+        oled.DispChar(str(str('游戏结束，分数为：') + str((str(wedapp_score)))), 0, 0, 1)
+        oled.show()
+        time.sleep(1)
+    if wedapp_x <= wedapp_zx0 + 40 and wedapp_x >= wedapp_zx0 and wedapp_y >= wedapp_zy0 - 3 and wedapp_y <= wedapp_zy0 + 3 or wedapp_x <= wedapp_zx1 + 40 and wedapp_x >= wedapp_zx1 and wedapp_y >= wedapp_zy1 - 3 and wedapp_y <= wedapp_zy1 + 3:
+        wedapp_c = -1
+    else:
+        wedapp_c = 1
